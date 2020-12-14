@@ -1,0 +1,3 @@
+include ':perplinedividerview'
+include ':app'
+rootProject.name = "LinkedPerpLineDividerView"
