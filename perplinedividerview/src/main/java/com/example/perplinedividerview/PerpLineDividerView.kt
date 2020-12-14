@@ -150,4 +150,27 @@ class PerpLineDividerView(ctx : Context) : View(ctx) {
             return this
         }
     }
+
+    data class PerpLineDivider(var i : Int) {
+
+        var curr : PLDNode = PLDNode(0)
+        var dir : Int = 1
+
+        fun draw(canvas : Canvas, paint : Paint) {
+            curr.draw(canvas, paint)
+        }
+
+        fun update(cb : (Float) -> Unit) {
+            curr.update {
+                curr = curr.getNext(dir) {
+                    dir *= -1
+                }
+                cb(it)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            curr.startUpdating(cb)
+        }
+    }
 }
