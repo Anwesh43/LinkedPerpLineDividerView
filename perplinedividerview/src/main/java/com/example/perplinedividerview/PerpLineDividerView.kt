@@ -19,7 +19,7 @@ val colors : Array<Int> = arrayOf(
 }.toTypedArray()
 val kParts : Int = 4
 val parts : Int = 3
-val scGap : Float = 0.02f / (parts + kParts)
+val scGap : Float = 0.05f
 val strokeFactor : Float = 90f
 val sizeFactor : Float = 3.9f
 val delay : Long = 20
@@ -42,8 +42,13 @@ fun Canvas.drawPerpLineDivider(scale : Float, w : Float, h : Float, paint : Pain
     drawLine(-size + 2 * size * sc3, 0f, -size + 2 * size * sc1, 0f, paint)
     for (j in 0..(kParts - 1)) {
         save()
-        translate(lSize * j, 0f)
-        drawLine(0f, 0f, 0f, -lSize * sc2.divideScale(0, parts), paint)
+        translate(-size + lSize * j, 0f)
+        drawLine(
+            0f,
+            0f,
+            0f,
+            -lSize * sc2.divideScale(j, kParts).sinify(),
+            paint)
         restore()
     }
     restore()
@@ -78,7 +83,11 @@ class PerpLineDividerView(ctx : Context) : View(ctx) {
     data class State(var scale : Float = 0f, var prevScale : Float = 0f, var dir : Float = 0f) {
 
         fun update(cb : (Float) -> Unit) {
-            scale += scGap * dir
+            var scSpeed : Float = scGap / parts
+            if (scale >= 0.33f && scale <= 0.66f) {
+                scSpeed = scGap / (kParts + parts)
+            }
+            scale += scSpeed * dir
             if (Math.abs(scale - prevScale) > 1) {
                 scale = prevScale + dir
                 dir = 0f
