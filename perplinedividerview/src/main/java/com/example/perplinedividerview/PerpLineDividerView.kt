@@ -23,6 +23,8 @@ val scGap : Float = 0.02f / (parts + kParts)
 val strokeFactor : Float = 90f
 val sizeFactor : Float = 3.9f
 val delay : Long = 20
+val backColor : Int = Color.parseColor("#BDBDBD")
+
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -108,6 +110,12 @@ class PerpLineDividerView(ctx : Context) : View(ctx) {
                 view.postInvalidate()
             }
         }
+
+        fun stop() {
+            if (animated) {
+                animated = false
+            }
+        }
     }
 
     data class PLDNode(var i : Int, val state : State = State()) {
@@ -171,6 +179,29 @@ class PerpLineDividerView(ctx : Context) : View(ctx) {
 
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
+        }
+    }
+
+    data class Renderer(var view : PerpLineDividerView) {
+
+        private val animator : Animator = Animator(view)
+        private val pld : PerpLineDivider = PerpLineDivider(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            pld.draw(canvas, paint)
+            animator.animate {
+                pld.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            pld.startUpdating {
+                animator.start()
+            }
         }
     }
 }
