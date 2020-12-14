@@ -209,4 +209,13 @@ class PerpLineDividerView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : PerpLineDividerView {
+            val view : PerpLineDividerView = PerpLineDividerView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
