@@ -52,6 +52,9 @@ fun Canvas.drawPerpLineDivider(scale : Float, w : Float, h : Float, paint : Pain
 fun Canvas.drawPLDNode(i : Int, scale : Float, paint : Paint) {
     val w : Float = width.toFloat()
     val h : Float = height.toFloat()
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.color = colors[i]
     drawPerpLineDivider(scale, w, h, paint)
 }
 
