@@ -52,3 +52,19 @@ fun Canvas.drawPLDNode(i : Int, scale : Float, paint : Paint) {
     val h : Float = height.toFloat()
     drawPerpLineDivider(scale, w, h, paint)
 }
+
+class PerpLineDividerView(ctx : Context) : View(ctx) {
+
+    override fun onDraw(canvas : Canvas) {
+
+    }
+
+    override fun onTouchEvent(event : MotionEvent) : Boolean {
+        when (event.action) {
+            MotionEvent.ACTION_DOWN -> {
+
+            }
+        }
+        return true
+    }
+}
